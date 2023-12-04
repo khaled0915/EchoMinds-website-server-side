@@ -2,7 +2,7 @@ const express  = require('express');
 
 const cors = require('cors') ;
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const app = express();
 
@@ -44,10 +44,43 @@ async function run() {
     const blogsCollection = client.db('blogCollection').collection('blog');
 
 
+    const userCollection = client.db('blogCollection').collection('users');
 
-    app.get('/blog', async(req,res)=>{
+
+
+
+    app.get('/blogs', async(req,res)=>{
       const result = await blogsCollection.find().toArray()
 
+      res.send(result);
+    })
+
+    app.get('/blogs/:id' , async(req,res)=>{
+
+      const id = req.params.id;
+
+      const query = { _id : new ObjectId(id) };
+
+      const result = await blogsCollection.findOne(query);
+      res.send(result)
+    })
+
+    app.get('/users' , async(req,res)=>{
+      const result  = await userCollection.find().toArray();
+      res.send(result);
+    })
+
+    app.post('/users' , async(req,res)=>{
+      const user = req.body ;
+
+      const query = { email : user.email };
+
+      const existingUser = await userCollection.findOne(query);
+      if(existingUser){
+        return res.send({ message : 'user already exists' , insertedId : null })
+      }
+
+      const result = await userCollection.insertOne(user);
       res.send(result);
     })
 
