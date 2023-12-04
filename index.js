@@ -48,6 +48,8 @@ async function run() {
 
     const userCollection = client.db('blogCollection').collection('users');
 
+    const wishListCollection = client.db('blogCollection').collection('wishList');
+
 
 
     // jwt related
