@@ -1,5 +1,7 @@
 const express  = require('express');
 
+const jwt = require('jsonwebtoken');
+
 const cors = require('cors') ;
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
@@ -47,7 +49,17 @@ async function run() {
     const userCollection = client.db('blogCollection').collection('users');
 
 
-    
+
+    // jwt related
+
+    app.post('/jwt' , async(req,res)=>{
+      const user = req.body ;
+
+      const token = jwt.sign(user , process.env.ACCESS_TOKEN_SECRET , {
+        expiresIn : '2h',
+      })
+      res.send({token});
+    })
 
 
 
