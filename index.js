@@ -51,6 +51,8 @@ async function run() {
     const wishListCollection = client.db('blogCollection').collection('wishList');
 
 
+    const commentCollection = client.db('blogCollection').collection('comment');
+
 
     // jwt related
 
@@ -106,6 +108,26 @@ async function run() {
       const result  = await blogsCollection.insertOne(item);
       res.send(result);
     })
+
+    app.get('/wishList'  , async(req,res)=>{
+      const email = req.query.email ;
+      const query = { email : email } ;
+
+      const result = await wishListCollection.find(query).toArray();
+      res.send(result);
+
+      
+    })
+
+    app.post('/wishList', async(req,res)=>{
+      const user = req.body ;
+
+      const result = await wishListCollection.insertOne(user);
+
+      res.send(result)
+    })
+
+
 
 
 
