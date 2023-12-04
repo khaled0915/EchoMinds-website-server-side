@@ -127,6 +127,17 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/comment' , async(req,res)=>{
+      const result = await commentCollection.find().toArray();
+      res.send(result);
+    })
+
+  app.post('/comment' , async(req,res)=>{
+    const comment = req.body ;
+
+    const commentList = await commentCollection.insertOne(comment)
+    res.send(commentList);
+  })
 
 
 
