@@ -47,6 +47,8 @@ async function run() {
     const userCollection = client.db('blogCollection').collection('users');
 
 
+    
+
 
 
     app.get('/blogs', async(req,res)=>{
@@ -81,6 +83,13 @@ async function run() {
       }
 
       const result = await userCollection.insertOne(user);
+      res.send(result);
+    })
+
+    app.post('/blogs' , async(req, res)=>{
+      const item = req.body ;
+
+      const result  = await blogsCollection.insertOne(item);
       res.send(result);
     })
 
